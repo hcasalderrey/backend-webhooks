@@ -3,6 +3,7 @@ import { envs } from './config';
 import { GithubController } from './presentation/github/github.controller';
 import { GitHubService } from './presentation/services/github.service';
 import { DiscordService } from './presentation/services/discord.service';
+import { GitHubSha256Middleware } from './presentation/middlewares/github-sha256.middleware';
 
 (()  =>{
     main()
@@ -16,6 +17,8 @@ function main() {
     const controller = new GithubController(service,discordservice)
 
     app.use(express.json())
+
+    app.use(GitHubSha256Middleware.verifySignature)
 
     app.post('/api/github', controller.webhookHandler )
 
